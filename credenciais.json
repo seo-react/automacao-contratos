@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "automacao-contratos-tribo",
+  "private_key_id": "cd93210b66e4a5fa155a9884499f823f2e41529b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDo7a7Q5LaeUWfv\n1vJj4CgnhSeFQLliMB8fl/KTTxzI8rb6m9T8qo+bZ8IpAJz0jyKehl0+imHabh0g\nUN3tuip7sT2VwDM2bB6qZHD6xTwNTI6Pd1Kjft0ldKP8gsaTTEg3RGxXLk06wFxy\n7BQSCCJ/Xl4ODxVwGmT34ugrDIg27ukZhm4l/vwEtilO2kZaaWZSGfeFTi4n8Y2C\ntTmiuFdskVwYLyePAKJDo4W/yKlTil7jHSyYx93OyjZckfr5eg5w8XTLme3SGge+\nUab+z0BROMeRuCBFBuECRJ1ptyHHEQh6rxlFFV8t5b5DyCR7TciinSuNPwTlph58\nKAC76FMPAgMBAAECggEAXRE207VGuDwrjLt0Du7t7Fh6IXZqe+5hSSTTogMuq6W6\n8agY8jmN9ph/DhX2IIseWHu0PvxYu8dacOKOweEr/08inbZ1X+3UVN2b/L6Yz3GC\n1pTlGnlikAgqS4bPI+SLSDXZGf5gkjRw2+Qy4r+IVR7V8sUZGjkZlaf+ftDbjiKl\nMa5HSYqHj8t/7eX4Vgl4h6KB+NkRrdegAFH3AuCCa5yHOlGnwPjm+oRY8odhpxr7\nBnjy6XCQJzdZFI7hgYi8GeSguEuvD0UWcdHTnDzGCNov42lmleO1+c8lwnUNz8pF\nAJhSyCJ5LkA+IO0zDyBFgUjvO9KnKWhk1Bvo55oK3QKBgQD1LJUqhU+5BtSBn9kl\n4EQO84YSif+8pXBYKg2dyIJIsj2OYTvyFOzUCyaLNlAg/qLZjeQHi6E3n6zdxGkR\n+Psl9s1cx3hnakeh+UQdMnjlxna93zcC3mJ5IabaE4bd/z4w6xIjFfx1t9FZcUqu\nM6xfqXbvS4Ct/me1hUhfrdFelQKBgQDzNq0ke1huepfy0jcQ3TjJMK/ZWqK+vAVu\nTd3mGI9aL5JFfyM/2m/cUuufml26kB0l5CeMX9cMfInxwJ6tFAvS6Lv72d+W6Jhf\nW3mQNfy2EAXYO4wRv+DZhePZceqOb0hmgguRdUZUfbm+ShEjvoXjYM3kBvMHj/Mi\nYPH4MmeWEwKBgA4ahHIvvQhNxke2pE0ze3bIt3u1iIqXkcDgmmvrLuNzrWrVWRdx\n8LW59nunojBjtYaCTQ3KEHocq1sOg2TPR9NFQUcHCnwYdwpwRmTPlHjTU91US9vU\nYyHIt8pvuSBoIHG79A0kpKM48cgNZlhjDJVsMDVPyJU5v0mH40Ptwc+JAoGBAMvu\nhK+aXUQFt3L7oQCa/gp0sH5n6R5VOZiL4gwVe937FYMAX+Yimrj7LmbdYMoWHNqw\nvBiQJBlsM55qDKLDtEZcr4M15Kz8ywbqBLxPCF8AgGYXSBN5+GdsROkHA836sZKC\naIDG/PnLkftkz4pRLqLBgOI6kX09znh9IWcjnIfRAoGAB47iUltEhyR4xaONi2zb\n4yJ63gtBxSRF2SV2Q0csgmqBuidlTwuip0jbUm4D1X2gD5iIkdL/ogIIS8yWcXn0\nEG758GSzbCvQJUMkBXiv3cCvq4asx4V9CwWBxfI/KHEyozHuIUIiaidKT8dHco/C\nVGDncMeAcKcfNFLFRYxNLa8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "automacao-contratos@automacao-contratos-tribo.iam.gserviceaccount.com",
+  "client_id": "106477169215639711694",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/automacao-contratos%40automacao-contratos-tribo.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
