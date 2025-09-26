@@ -1,11 +1,14 @@
+require('dotenv').config();
+
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const FormData = require('form-data');
 
 // Credenciais da D4Sign
-const tokenAPI = 'live_ad5flb2eddfbfc95a35e6a46da07688ed5084bcd2210a89a671474029eba55fd';
-const cryptKey = 'live_crypt_1j4FuzRZvpEPMnLwZG5NILgChlJxyNeD';
+const tokenAPI = process.env.D4SIGN_API_TOKEN;
+const cryptKey = process.env.D4SIGN_CRYPT_KEY;
+
 
 // Função principal que envia o contrato para assinatura
 async function aprovarContrato({ nomeArquivo, signatario }) {
@@ -35,7 +38,7 @@ async function aprovarContrato({ nomeArquivo, signatario }) {
     form.append('folder', 'default');
 
     console.log('📤 Enviando documento para D4Sign...');
-    const uploadResponse = await axios.post('https://api.d4sign.com.br/api/v1/documents/upload', form, {
+    const uploadResponse = await axios.post('https://secure.d4sign.com.br/api/v1/documents/upload', form, {
       headers: {
         tokenAPI,
         cryptKey,
@@ -48,7 +51,7 @@ async function aprovarContrato({ nomeArquivo, signatario }) {
 
     // 2. Adiciona o signatário
     console.log('👤 Adicionando signatário...');
-    await axios.post('https://api.d4sign.com.br/api/v1/documents/addSigner', null, {
+    await axios.post('https://secure.d4sign.com.br/api/v1/documents/addSigner', null, {
       headers: {
         tokenAPI,
         cryptKey
@@ -67,7 +70,7 @@ async function aprovarContrato({ nomeArquivo, signatario }) {
 
     // 3. Dispara o convite para assinatura
     console.log('📨 Enviando convite de assinatura...');
-    await axios.post('https://api.d4sign.com.br/api/v1/documents/sendToSigner', null, {
+    await axios.post('https://secure.d4sign.com.br/api/v1/documents/sendToSigner', null, {
       headers: {
         tokenAPI,
         cryptKey
