@@ -83,7 +83,7 @@ app.get('/confirmar', async (req, res) => {
     await aprovarContrato({
       nomeArquivo,
       signatario: {
-        email: 'abdiel@tribo.com',
+        email: 'abdiel@agenciatribo.com',
         nome: 'Abdiel Marins',
         telefone: '83999999999'
       },
