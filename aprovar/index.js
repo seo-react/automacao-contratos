@@ -1,89 +1,59 @@
-require('dotenv').config();
-
-const fs = require('fs');
-const path = require('path');
 const axios = require('axios');
-const FormData = require('form-data');
+const { gerarContratoPDF, lerPDFComoBase64 } = require('../utils/gerarContrato');
 
-// Credenciais da D4Sign
-const tokenAPI = process.env.D4SIGN_API_TOKEN;
-const cryptKey = process.env.D4SIGN_CRYPT_KEY;
+async function aprovarContrato({ nomeArquivo, signatario, dados }) {
+  const caminhoPDF = gerarContratoPDF(dados, nomeArquivo);
+  const base64 = lerPDFComoBase64(caminhoPDF);
 
+  const SIMULACAO = process.env.SIMULACAO === 'true';
 
-// Função principal que envia o contrato para assinatura
-async function aprovarContrato({ nomeArquivo, signatario }) {
-  const caminhoPDF = path.join(__dirname, '..', nomeArquivo);
-  console.log('📄 Verificando arquivo:', caminhoPDF);
-
-  if (!fs.existsSync(caminhoPDF)) {
-    console.error('❌ PDF não encontrado:', caminhoPDF);
-    throw new Error('PDF não encontrado.');
-  }
-
-  // Se estiver em modo simulado, pula chamadas reais
-  if (process.env.SIMULACAO === 'true') {
-    console.log('⚙️ Modo simulado ativado. Pulando chamadas reais...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log('✅ Documento simulado. UUID: fake-uuid-1234567890');
-    console.log('👤 Signatário simulado:', signatario.nome);
-    console.log('📨 Convite simulado enviado!');
+  if (SIMULACAO) {
+    console.log('🧪 Modo simulação ativado.');
+    console.log('📄 Documento gerado:', nomeArquivo);
+    console.log('👤 Signatário simulado:', signatario.email);
+    console.log('✅ Simulação concluída com sucesso.');
     return;
   }
 
-  try {
-    // 1. Upload do documento
-    const form = new FormData();
-    form.append('file', fs.createReadStream(caminhoPDF));
-    form.append('name', nomeArquivo);
-    form.append('folder', 'default');
+  const uuid_cofre = process.env.D4SIGN_COFRE;
+  const uuid_pasta = process.env.D4SIGN_PASTA;
+  const tokenAPI = process.env.D4SIGN_API_TOKEN;
+  const cryptKey = process.env.D4SIGN_CRYPT_KEY;
 
-    console.log('📤 Enviando documento para D4Sign...');
-    const uploadResponse = await axios.post('https://secure.d4sign.com.br/api/v1/documents/upload', form, {
-      headers: {
-        tokenAPI,
-        cryptKey,
-        ...form.getHeaders()
-      }
-    });
+  // 1. Upload do documento
+  const uploadRes = await axios.post('https://secure.d4sign.com.br/api/v1/documents/upload', {
+    base64,
+    name: nomeArquivo,
+    uuid_cofre,
+    uuid_pasta
+  }, {
+    headers: { tokenAPI, cryptKey }
+  });
 
-    const uuid = uploadResponse.data.uuid;
-    console.log('✅ Documento enviado. UUID:', uuid);
+  const uuid_document = uploadRes.data.uuid;
+  console.log('📤 Documento enviado. UUID:', uuid_document);
 
-    // 2. Adiciona o signatário
-    console.log('👤 Adicionando signatário...');
-    await axios.post('https://secure.d4sign.com.br/api/v1/documents/addSigner', null, {
-      headers: {
-        tokenAPI,
-        cryptKey
-      },
-      params: {
-        uuid,
-        signer: signatario.email,
-        act: 'sign',
-        name: signatario.nome,
-        phone_country: '55',
-        phone_number: signatario.telefone.replace(/\D/g, '')
-      }
-    });
+  // 2. Adicionar signatário
+  await axios.post('https://secure.d4sign.com.br/api/v1/documents/addSigner', {
+    uuid_document,
+    email: signatario.email,
+    action: 'SIGN',
+    foreign: false,
+    certificadoicpbr: false
+  }, {
+    headers: { tokenAPI, cryptKey }
+  });
 
-    console.log('✅ Signatário adicionado:', signatario.nome);
+  console.log('✍️ Signatário adicionado:', signatario.email);
 
-    // 3. Dispara o convite para assinatura
-    console.log('📨 Enviando convite de assinatura...');
-    await axios.post('https://secure.d4sign.com.br/api/v1/documents/sendToSigner', null, {
-      headers: {
-        tokenAPI,
-        cryptKey
-      },
-      params: { uuid }
-    });
+  // 3. Enviar convite
+  await axios.post('https://secure.d4sign.com.br/api/v1/documents/sendDocument', {
+    uuid_document
+  }, {
+    headers: { tokenAPI, cryptKey }
+  });
 
-    console.log('✅ Convite enviado com sucesso!');
-  } catch (err) {
-    const erroDetalhado = err.response?.data || err.message;
-    console.error('❌ Erro durante o processo:', erroDetalhado);
-    throw new Error(`Erro ao aprovar contrato: ${JSON.stringify(erroDetalhado)}`);
-  }
+  console.log('📨 Convite de assinatura enviado!');
 }
 
 module.exports = { aprovarContrato };

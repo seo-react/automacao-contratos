@@ -1,0 +1,64 @@
+<form action="/aprovar" method="POST">
+  <h2>Solicitação de Contrato</h2>
+
+  <label>Empresa*</label>
+  <input type="text" name="empresa" required>
+
+  <label>Website*</label>
+  <input type="url" name="website" required>
+
+  <label>Nome*</label>
+  <input type="text" name="nome" required>
+
+  <label>Email corporativo*</label>
+  <input type="email" name="emailCorporativo" required>
+
+  <label>Celular*</label>
+  <input type="tel" name="celular" placeholder="+55" required>
+
+  <label>Razão Social*</label>
+  <input type="text" name="razaoSocial" required>
+
+  <label>CNPJ*</label>
+  <input type="text" name="cnpj" required>
+
+  <label>Telefone*</label>
+  <input type="tel" name="telefone" placeholder="+55" required>
+
+  <label>E-mail de Faturamento*</label>
+  <input type="email" name="emailFaturamento" required>
+
+  <label>Escolha o melhor dia para pagamento*</label>
+  <select name="diaPagamento" required>
+    <option value="">Selecione</option>
+    <option value="5">Dia 5</option>
+    <option value="10">Dia 10</option>
+    <option value="15">Dia 15</option>
+    <option value="20">Dia 20</option>
+    <option value="25">Dia 25</option>
+  </select>
+
+  <label>Nome do Representante Legal (assinará o contrato)*</label>
+  <input type="text" name="representanteNome" required>
+
+  <label>E-Mail do Representante Legal*</label>
+  <input type="email" name="representanteEmail" required>
+
+  <label>CPF do Representante Legal*</label>
+  <input type="text" name="representanteCPF" required>
+
+  <label>Outros signatários (Nome, Email, CPF)</label>
+  <textarea name="outrosSignatarios" placeholder="Separar por linha ou vírgula"></textarea>
+
+  <label>
+    <input type="checkbox" name="sigiloConfidencialidade" required>
+    Essa etapa caracteriza a fase pré contratual sobre Sigilo e Confidencialidade
+  </label>
+
+  <label>
+    <input type="checkbox" name="politicaPrivacidade" required>
+    Ao informar meus dados, eu concordo com a Política de Privacidade
+  </label>
+
+  <button type="submit">Enviar</button>
+</form>
