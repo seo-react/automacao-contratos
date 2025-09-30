@@ -1,59 +1,82 @@
 const axios = require('axios');
-const { gerarContratoPDF, lerPDFComoBase64 } = require('../utils/gerarContrato');
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config();
 
 async function aprovarContrato({ nomeArquivo, signatario, dados }) {
-  const caminhoPDF = gerarContratoPDF(dados, nomeArquivo);
-  const base64 = lerPDFComoBase64(caminhoPDF);
+  try {
+    const caminhoPDF = path.join(__dirname, '..', nomeArquivo);
 
-  const SIMULACAO = process.env.SIMULACAO === 'true';
+    // 🔐 Autenticação
+    const tokenAPI = process.env.D4SIGN_API_KEY;
+    const cryptKey = process.env.D4SIGN_CRYPT_KEY;
 
-  if (SIMULACAO) {
-    console.log('🧪 Modo simulação ativado.');
-    console.log('📄 Documento gerado:', nomeArquivo);
-    console.log('👤 Signatário simulado:', signatario.email);
-    console.log('✅ Simulação concluída com sucesso.');
-    return;
+    if (!fs.existsSync(caminhoPDF)) {
+      throw new Error(`Arquivo PDF não encontrado: ${caminhoPDF}`);
+    }
+
+    // 📤 Upload do documento
+    const uploadResponse = await axios.post(
+      'https://secure.d4sign.com.br/api/v1/documents',
+      {
+        name: nomeArquivo,
+        folder: process.env.D4SIGN_FOLDER_ID
+      },
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        params: {
+          tokenAPI,
+          cryptKey
+        }
+      }
+    );
+
+    const documentKey = uploadResponse.data.uuid;
+
+    // 👤 Cadastrar signatário
+    await axios.post(
+      `https://secure.d4sign.com.br/api/v1/documents/${documentKey}/signers`,
+      {
+        email: signatario.email,
+        name: signatario.nome,
+        cpf: signatario.cpf
+      },
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        params: {
+          tokenAPI,
+          cryptKey
+        }
+      }
+    );
+
+    // 🚀 Enviar para assinatura
+    await axios.post(
+      `https://secure.d4sign.com.br/api/v1/documents/${documentKey}/send`,
+      {},
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        params: {
+          tokenAPI,
+          cryptKey
+        }
+      }
+    );
+
+    console.log(`✅ Contrato ${nomeArquivo} enviado para assinatura`);
+  } catch (err) {
+    console.error('❌ Erro ao aprovar contrato:', err.stack);
+    throw err;
   }
-
-  const uuid_cofre = process.env.D4SIGN_COFRE;
-  const uuid_pasta = process.env.D4SIGN_PASTA;
-  const tokenAPI = process.env.D4SIGN_API_TOKEN;
-  const cryptKey = process.env.D4SIGN_CRYPT_KEY;
-
-  // 1. Upload do documento
-  const uploadRes = await axios.post('https://secure.d4sign.com.br/api/v1/documents/upload', {
-    base64,
-    name: nomeArquivo,
-    uuid_cofre,
-    uuid_pasta
-  }, {
-    headers: { tokenAPI, cryptKey }
-  });
-
-  const uuid_document = uploadRes.data.uuid;
-  console.log('📤 Documento enviado. UUID:', uuid_document);
-
-  // 2. Adicionar signatário
-  await axios.post('https://secure.d4sign.com.br/api/v1/documents/addSigner', {
-    uuid_document,
-    email: signatario.email,
-    action: 'SIGN',
-    foreign: false,
-    certificadoicpbr: false
-  }, {
-    headers: { tokenAPI, cryptKey }
-  });
-
-  console.log('✍️ Signatário adicionado:', signatario.email);
-
-  // 3. Enviar convite
-  await axios.post('https://secure.d4sign.com.br/api/v1/documents/sendDocument', {
-    uuid_document
-  }, {
-    headers: { tokenAPI, cryptKey }
-  });
-
-  console.log('📨 Convite de assinatura enviado!');
 }
 
 module.exports = { aprovarContrato };
