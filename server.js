@@ -42,7 +42,7 @@ app.post('/aprovar', async (req, res) => {
     await aprovarContrato({
       nomeArquivo,
       signatario: {
-        email: dados.representanteEmail,
+        email: 'abdiel@agenciatribo.com.br',
         nome: dados.representanteNome,
         telefone: dados.celular || dados.telefone
       },
