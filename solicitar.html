@@ -1,64 +1,171 @@
-<form action="/aprovar" method="POST">
-  <h2>Solicitação de Contrato</h2>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solicitação de Contrato | Agência Tribo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
 
-  <label>Empresa*</label>
-  <input type="text" name="empresa" required>
+    header {
+      background-color: #222;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  <label>Website*</label>
-  <input type="url" name="website" required>
+    header h1 {
+      color: #fff;
+      font-size: 20px;
+      margin: 0;
+    }
 
-  <label>Nome*</label>
-  <input type="text" name="nome" required>
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
 
-  <label>Email corporativo*</label>
-  <input type="email" name="emailCorporativo" required>
+    nav a:hover {
+      text-decoration: underline;
+    }
 
-  <label>Celular*</label>
-  <input type="tel" name="celular" placeholder="+55" required>
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
 
-  <label>Razão Social*</label>
-  <input type="text" name="razaoSocial" required>
+    h2 {
+      margin-top: 0;
+      color: #444;
+    }
 
-  <label>CNPJ*</label>
-  <input type="text" name="cnpj" required>
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 500;
+    }
 
-  <label>Telefone*</label>
-  <input type="tel" name="telefone" placeholder="+55" required>
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
 
-  <label>E-mail de Faturamento*</label>
-  <input type="email" name="emailFaturamento" required>
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
 
-  <label>Escolha o melhor dia para pagamento*</label>
-  <select name="diaPagamento" required>
-    <option value="">Selecione</option>
-    <option value="5">Dia 5</option>
-    <option value="10">Dia 10</option>
-    <option value="15">Dia 15</option>
-    <option value="20">Dia 20</option>
-    <option value="25">Dia 25</option>
-  </select>
+    button {
+      margin-top: 30px;
+      padding: 12px 25px;
+      background-color: #34a853;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-  <label>Nome do Representante Legal (assinará o contrato)*</label>
-  <input type="text" name="representanteNome" required>
+    button:hover {
+      background-color: #2c8c45;
+    }
 
-  <label>E-Mail do Representante Legal*</label>
-  <input type="email" name="representanteEmail" required>
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Agência Tribo</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/solicitar">Solicitar Contrato</a>
+    </nav>
+  </header>
 
-  <label>CPF do Representante Legal*</label>
-  <input type="text" name="representanteCPF" required>
+  <main>
+    <form action="/aprovar" method="POST">
+      <h2>Solicitação de Contrato</h2>
 
-  <label>Outros signatários (Nome, Email, CPF)</label>
-  <textarea name="outrosSignatarios" placeholder="Separar por linha ou vírgula"></textarea>
+      <label>Empresa*</label>
+      <input type="text" name="empresa" required>
 
-  <label>
-    <input type="checkbox" name="sigiloConfidencialidade" required>
-    Essa etapa caracteriza a fase pré contratual sobre Sigilo e Confidencialidade
-  </label>
+      <label>Website*</label>
+      <input type="url" name="website" required>
 
-  <label>
-    <input type="checkbox" name="politicaPrivacidade" required>
-    Ao informar meus dados, eu concordo com a Política de Privacidade
-  </label>
+      <label>Nome*</label>
+      <input type="text" name="nome" required>
 
-  <button type="submit">Enviar</button>
-</form>
+      <label>Email corporativo*</label>
+      <input type="email" name="emailCorporativo" required>
+
+      <label>Celular*</label>
+      <input type="tel" name="celular" placeholder="+55" required>
+
+      <label>Razão Social*</label>
+      <input type="text" name="razaoSocial" required>
+
+      <label>CNPJ*</label>
+      <input type="text" name="cnpj" required>
+
+      <label>Telefone*</label>
+      <input type="tel" name="telefone" placeholder="+55" required>
+
+      <label>E-mail de Faturamento*</label>
+      <input type="email" name="emailFaturamento" required>
+
+      <label>Escolha o melhor dia para pagamento*</label>
+      <select name="diaPagamento" required>
+        <option value="">Selecione</option>
+        <option value="5">Dia 5</option>
+        <option value="10">Dia 10</option>
+        <option value="15">Dia 15</option>
+        <option value="20">Dia 20</option>
+        <option value="25">Dia 25</option>
+      </select>
+
+      <label>Nome do Representante Legal (assinará o contrato)*</label>
+      <input type="text" name="representanteNome" required>
+
+      <label>E-Mail do Representante Legal*</label>
+      <input type="email" name="representanteEmail" required>
+
+      <label>CPF do Representante Legal*</label>
+      <input type="text" name="representanteCPF" required>
+
+      <label>Outros signatários (Nome, Email, CPF)</label>
+      <textarea name="outrosSignatarios" placeholder="Separar por linha ou vírgula"></textarea>
+
+      <label>
+        <input type="checkbox" name="sigiloConfidencialidade" required>
+        Essa etapa caracteriza a fase pré contratual sobre Sigilo e Confidencialidade
+      </label>
+
+      <label>
+        <input type="checkbox" name="politicaPrivacidade" required>
+        Ao informar meus dados, eu concordo com a Política de Privacidade
+      </label>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </main>
+</body>
+</html>
