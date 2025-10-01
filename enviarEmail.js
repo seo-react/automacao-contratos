@@ -1,45 +1,40 @@
 const nodemailer = require('nodemailer');
 const path = require('path');
+require('dotenv').config();
 
-// Caminho do PDF exportado
-const caminhoPDF = path.join(__dirname, 'Contrato_Abdiel_Marins.pdf');
+async function enviarEmail({ nome, contratoId, caminhoPDF }) {
+  const documentId = '1kGxkIxCZlQkTpTvrl3dBlrZGFTsdITbnmnXzeZtYfCM';
 
-// ID do contrato no Google Docs
-const documentId = '1kGxkIxCZlQkTpTvrl3dBlrZGFTsdITbnmnXzeZtYfCM';
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_REMETENTE,
+      pass: process.env.EMAIL_SENHA
+    }
+  });
 
-// Configuração do transporte SMTP (exemplo com Gmail)
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'SEU_EMAIL@gmail.com',
-    pass: 'SENHA_DO_APP' // Use senha de app, não sua senha pessoal
-  }
-});
+  const htmlEmail = `
+    <h2>Contrato gerado para revisão</h2>
+    <p>Olá Abdiel, o contrato está pronto para sua aprovação.</p>
+    <p><strong>Serviço:</strong> Gestão de Redes Sociais</p>
+    <p><strong>Valor:</strong> R$ 3.500,00</p>
+    <br>
+    <a href="https://docs.google.com/document/d/${documentId}/edit" style="padding: 10px 20px; background-color: #fbbc04; color: black; text-decoration: none; border-radius: 5px;">📄 Abrir contrato</a>
+    &nbsp;&nbsp;
+    <a href="https://contratos-tribo.onrender.com/confirmar?id=${contratoId}" style="padding: 10px 20px; background-color: #34a853; color: white; text-decoration: none; border-radius: 5px;">✅ Aprovar</a>
+    <br><br>
+    <p>O PDF também está anexado para referência.</p>
+  `;
 
-// HTML do e-mail com botões
-const htmlEmail = `
-  <h2>Contrato gerado para revisão</h2>
-  <p>Olá Abdiel, o contrato está pronto para sua aprovação.</p>
-  <p><strong>Serviço:</strong> Gestão de Redes Sociais</p>
-  <p><strong>Valor:</strong> R$ 3.500,00</p>
-  <br>
-  <a href="https://docs.google.com/document/d/${documentId}/edit" style="padding: 10px 20px; background-color: #fbbc04; color: black; text-decoration: none; border-radius: 5px;">📄 Abrir contrato</a>
-  &nbsp;&nbsp;
-  <a href="https://seudominio.com/aprovar?id=${documentId}" style="padding: 10px 20px; background-color: #34a853; color: white; text-decoration: none; border-radius: 5px;">✅ Aprovar</a>
-  <br><br>
-  <p>O PDF também está anexado para referência.</p>
-`;
-
-async function enviarEmail() {
   try {
     await transporter.sendMail({
-      from: '"Agência Tribo" <SEU_EMAIL@gmail.com>',
-      to: 'abdiel@agenciatribo.com.br',
-      subject: 'Contrato para aprovação',
+      from: `"Agência Tribo" <${process.env.EMAIL_REMETENTE}>`,
+      to: process.env.EMAIL_REMETENTE,
+      subject: `Contrato para aprovação: ${nome}`,
       html: htmlEmail,
       attachments: [
         {
-          filename: 'Contrato_Abdiel_Marins.pdf',
+          filename: `${contratoId}.pdf`,
           path: caminhoPDF
         }
       ]
@@ -51,4 +46,4 @@ async function enviarEmail() {
   }
 }
 
-enviarEmail();
+module.exports = { enviarEmail };
