@@ -23,7 +23,7 @@ async function enviarEmail({ nome, contratoId, caminhoPDF }) {
     const pdfBuffer = fs.readFileSync(caminhoPDF);
 
     await resend.emails.send({
-      from: 'Agência Tribo <contato@agenciatribo.com.br>',
+      from: 'Agência Tribo <contatomarins7@gmail.com>',
       to: ['contatomarins7@gmail.com'],
       subject: `Contrato para aprovação: ${nome}`,
       html: htmlEmail,
