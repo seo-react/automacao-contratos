@@ -3,6 +3,8 @@ const path = require('path');
 require('dotenv').config();
 
 async function enviarEmail({ nome, contratoId, caminhoPDF }) {
+  console.log(`📤 Disparando envio de e-mail para aprovação do contrato: ${contratoId}`);
+
   const documentId = '1kGxkIxCZlQkTpTvrl3dBlrZGFTsdITbnmnXzeZtYfCM';
 
   const transporter = nodemailer.createTransport({
@@ -42,7 +44,7 @@ async function enviarEmail({ nome, contratoId, caminhoPDF }) {
 
     console.log('✅ E-mail enviado com sucesso!');
   } catch (err) {
-    console.error('❌ Erro ao enviar o e-mail:', err.message);
+    console.error('❌ Erro ao enviar o e-mail:', err);
   }
 }
 
