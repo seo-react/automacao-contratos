@@ -24,7 +24,7 @@ async function enviarEmail({ nome, contratoId, caminhoPDF }) {
 
     await resend.emails.send({
       from: 'Agência Tribo <contato@agenciatribo.com.br>',
-      to: ['abdiel@agenciatribo.com.br'],
+      to: ['contatomarins7@gmail.com'],
       subject: `Contrato para aprovação: ${nome}`,
       html: htmlEmail,
       attachments: [
