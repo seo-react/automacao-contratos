@@ -9,14 +9,15 @@ async function enviarEmail({ nome, contratoId, caminhoPDF }) {
   console.log(`📤 Enviando e-mail via Resend para: ${nome}`);
 
   const htmlEmail = `
-    <h2>Contrato gerado para revisão</h2>
-    <p>Olá Abdiel, o contrato está pronto para sua aprovação.</p>
-    <p><strong>Serviço:</strong> Gestão de Redes Sociais</p>
-    <p><strong>Valor:</strong> R$ 3.500,00</p>
-    <br>
-    <a href="https://contratos-tribo.onrender.com/confirmar?id=${contratoId}" style="padding: 10px 20px; background-color: #34a853; color: white; text-decoration: none; border-radius: 5px;">✅ Aprovar</a>
-    <br><br>
-    <p>O PDF também está anexado para referência.</p>
+     <h2>Contrato gerado para revisão</h2>
+  <p>Olá ${nome}, o contrato está pronto para sua aprovação.</p>
+  <p><strong>Empresa:</strong> ${empresa}</p>
+  <p><strong>Serviço:</strong> ${servico}</p>
+  <p><strong>Valor:</strong> ${valor}</p>
+  <br>
+  <a href="https://contratos-tribo.onrender.com/confirmar?id=${contratoId}" style="padding: 10px 20px; background-color: #34a853; color: white; text-decoration: none; border-radius: 5px;">✅ Aprovar</a>
+  <br><br>
+  <p>O PDF também está anexado para referência.</p>
   `;
 
   try {
