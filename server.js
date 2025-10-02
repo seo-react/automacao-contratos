@@ -33,15 +33,24 @@ app.post('/aprovar', async (req, res) => {
     console.log('📄 PDF gerado em:', caminhoPDF);
 
     // ✉️ Envia e-mail de aprovação com botões
-   await enviarEmail({
-  nome: dados.representanteNome,
+  await enviarEmail({
   contratoId: nomeArquivo.replace('.pdf', ''),
   caminhoPDF,
-  emailDestino: dados.representanteEmail,
+  representanteNome: dados.representanteNome,
+  representanteEmail: dados.representanteEmail,
+  representanteCPF: dados.representanteCPF,
   empresa: dados.empresa,
+  website: dados.website,
+  razaoSocial: dados.razaoSocial,
+  cnpj: dados.cnpj,
+  telefone: dados.telefone,
+  emailFaturamento: dados.emailFaturamento,
+  diaPagamento: dados.diaPagamento,
+  outrosSignatarios: dados.outrosSignatarios,
   servico: 'Gestão de Redes Sociais',
   valor: 'R$ 3.500,00'
 });
+
 
 
     res.send(`
