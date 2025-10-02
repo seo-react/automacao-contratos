@@ -34,6 +34,7 @@ app.post('/aprovar', async (req, res) => {
 
     // ✉️ Envia e-mail de aprovação com botões
   await enviarEmail({
+  nome: dados.nome,
   contratoId: nomeArquivo.replace('.pdf', ''),
   caminhoPDF,
   representanteNome: dados.representanteNome,
@@ -50,6 +51,7 @@ app.post('/aprovar', async (req, res) => {
   servico: 'Gestão de Redes Sociais',
   valor: 'R$ 3.500,00'
 });
+
 
 
 
