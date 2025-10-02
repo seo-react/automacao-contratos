@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-async function enviarEmail({ nome, contratoId, caminhoPDF }) {
+async function enviarEmail({ nome, contratoId, caminhoPDF, emailDestino, empresa, servico, valor }) {
   console.log(`📤 Enviando e-mail via Resend para: ${nome}`);
 
   const htmlEmail = `
