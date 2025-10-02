@@ -38,7 +38,12 @@ app.get('/api/contratos', (req, res) => {
 // 📥 Recebe formulário e gera contrato
 app.post('/aprovar', async (req, res) => {
   const dados = req.body;
-  const nomeArquivo = `Contrato_${dados.representanteNome?.replace(/\s+/g, '_') || 'Desconhecido'}.pdf`;
+  const nomeArquivo = `Contrato_${removerAcentos(dados.representanteNome || 'Desconhecido').replace(/\s+/g, '_')}.pdf`;
+
+function removerAcentos(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 
   try {
     console.log('📥 Dados recebidos do formulário:', dados);
