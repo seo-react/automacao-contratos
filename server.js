@@ -5,15 +5,19 @@ dotenv.config();
 
 const { aprovarContrato } = require('./aprovar/index');
 const { gerarContratoPDF } = require('./utils/gerarContrato');
-const { enviarEmail } = require('./enviarEmail'); // ← novo import
+const { enviarEmail } = require('./enviarEmail');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// 🗂️ Lista de contratos pendentes
+const contratosPendentes = [];
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// 🌐 Rotas de páginas
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -22,6 +26,16 @@ app.get('/solicitar', (req, res) => {
   res.sendFile(path.join(__dirname, 'solicitar.html'));
 });
 
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dashboard.html'));
+});
+
+// 🔄 API para carregar contratos no dashboard
+app.get('/api/contratos', (req, res) => {
+  res.json(contratosPendentes);
+});
+
+// 📥 Recebe formulário e gera contrato
 app.post('/aprovar', async (req, res) => {
   const dados = req.body;
   const nomeArquivo = `Contrato_${dados.representanteNome?.replace(/\s+/g, '_') || 'Desconhecido'}.pdf`;
@@ -32,28 +46,33 @@ app.post('/aprovar', async (req, res) => {
     const caminhoPDF = gerarContratoPDF(dados, nomeArquivo);
     console.log('📄 PDF gerado em:', caminhoPDF);
 
-    // ✉️ Envia e-mail de aprovação com botões
-  await enviarEmail({
-  nome: dados.nome,
-  contratoId: nomeArquivo.replace('.pdf', ''),
-  caminhoPDF,
-  representanteNome: dados.representanteNome,
-  representanteEmail: dados.representanteEmail,
-  representanteCPF: dados.representanteCPF,
-  empresa: dados.empresa,
-  website: dados.website,
-  razaoSocial: dados.razaoSocial,
-  cnpj: dados.cnpj,
-  telefone: dados.telefone,
-  emailFaturamento: dados.emailFaturamento,
-  diaPagamento: dados.diaPagamento,
-  outrosSignatarios: dados.outrosSignatarios,
-  servico: 'Gestão de Redes Sociais',
-  valor: 'R$ 3.500,00'
-});
+    // ✉️ Envia e-mail
+    await enviarEmail({
+      nome: dados.nome,
+      contratoId: nomeArquivo.replace('.pdf', ''),
+      caminhoPDF,
+      representanteNome: dados.representanteNome,
+      representanteEmail: dados.representanteEmail,
+      representanteCPF: dados.representanteCPF,
+      empresa: dados.empresa,
+      website: dados.website,
+      razaoSocial: dados.razaoSocial,
+      cnpj: dados.cnpj,
+      telefone: dados.telefone,
+      emailFaturamento: dados.emailFaturamento,
+      diaPagamento: dados.diaPagamento,
+      outrosSignatarios: dados.outrosSignatarios,
+      servico: 'Gestão de Redes Sociais',
+      valor: 'R$ 3.500,00'
+    });
 
-
-
+    // 🗂️ Adiciona contrato à lista
+    contratosPendentes.unshift({
+      nome: dados.representanteNome,
+      servico: 'Gestão de Redes Sociais',
+      empresa: dados.empresa,
+      id: nomeArquivo.replace('.pdf', '')
+    });
 
     res.send(`
       <html>
@@ -78,6 +97,7 @@ app.post('/aprovar', async (req, res) => {
   }
 });
 
+// ✅ Confirmação de aprovação
 app.get('/confirmar', async (req, res) => {
   const contratoId = req.query.id;
   const nomeArquivo = `${contratoId}.pdf`;

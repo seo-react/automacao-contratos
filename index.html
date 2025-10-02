@@ -21,6 +21,11 @@
     .table-dark-mode thead {
       background-color: #2c2c2c;
     }
+    .alert-dark-mode {
+      background-color: #333;
+      color: #f1f1f1;
+      border-color: #555;
+    }
   </style>
 </head>
 <body class="bg-light">
@@ -43,7 +48,7 @@
   <div class="container py-5">
     <h2 class="mb-4">📄 Contratos Pendentes</h2>
 
-    <table id="tabela" class="table table-bordered bg-white shadow-sm">
+    <table id="tabela" class="table table-bordered bg-white shadow-sm table-responsive">
       <thead class="table-light">
         <tr>
           <th>Nome</th>
@@ -61,51 +66,58 @@
   </div>
 
   <script>
-    const contratos = [
-      {
-        nome: "Abdiel Marins",
-        servico: "Social Media",
-        empresa: "Agência Tribo",
-        id: "Abdiel_Marins"
-      }
-    ];
+    async function carregarContratos() {
+      const resposta = await fetch('/api/contratos');
+      const contratos = await resposta.json();
 
-    const tabela = document.getElementById("tabela-contratos");
+      const tabela = document.getElementById("tabela-contratos");
+      tabela.innerHTML = '';
 
-    contratos.forEach(c => {
-      const linha = document.createElement("tr");
-      linha.innerHTML = `
-        <td>${c.nome}</td>
-        <td>${c.servico}</td>
-        <td>${c.empresa}</td>
-        <td>
-          <a href="/aprovar?id=${c.id}" class="btn btn-success btn-sm btn-aprovar">
-            <i class="bi bi-check-circle"></i> Aprovar
-          </a>
-        </td>
-      `;
-      tabela.appendChild(linha);
-    });
-
-    document.querySelectorAll('.btn-aprovar').forEach(botao => {
-      botao.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const url = botao.getAttribute('href');
-
-        try {
-          const resposta = await fetch(url);
-          const texto = await resposta.text();
-          mostrarAlerta(texto, 'success');
-        } catch (erro) {
-          mostrarAlerta('❌ Erro ao aprovar contrato.', 'danger');
-        }
+      contratos.forEach(c => {
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+          <td>${c.nome}</td>
+          <td>${c.servico}</td>
+          <td>${c.empresa}</td>
+          <td>
+            <a href="/aprovar?id=${c.id}" class="btn btn-success btn-sm btn-aprovar">
+              <i class="bi bi-check-circle"></i> Aprovar
+            </a>
+          </td>
+        `;
+        tabela.appendChild(linha);
       });
-    });
+
+      ativarBotoes();
+    }
+
+    function ativarBotoes() {
+      document.querySelectorAll('.btn-aprovar').forEach(botao => {
+        botao.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const url = botao.getAttribute('href');
+
+          try {
+            const resposta = await fetch(url);
+            const texto = await resposta.text();
+            mostrarAlerta(texto, 'success');
+            carregarContratos(); // atualiza após aprovação
+          } catch (erro) {
+            mostrarAlerta('❌ Erro ao aprovar contrato.', 'danger');
+          }
+        });
+      });
+    }
 
     function mostrarAlerta(mensagem, tipo) {
       const alerta = document.getElementById('alerta');
       alerta.textContent = mensagem;
       alerta.className = `alert alert-${tipo} mt-3`;
+      if (document.body.classList.contains('dark-mode')) {
+        alerta.classList.add('alert-dark-mode');
+      } else {
+        alerta.classList.remove('alert-dark-mode');
+      }
       alerta.classList.remove('d-none');
     }
 
@@ -116,6 +128,8 @@
       icone.classList.toggle('bi-moon');
       icone.classList.toggle('bi-sun');
     }
+
+    carregarContratos();
   </script>
 </body>
 </html>
