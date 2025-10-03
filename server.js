@@ -26,8 +26,8 @@ app.get('/solicitar', (req, res) => {
   res.sendFile(path.join(__dirname, 'solicitar.html'));
 });
 
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dashboard.html'));
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
 // 🔄 API para carregar contratos no dashboard
