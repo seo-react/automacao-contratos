@@ -55,7 +55,7 @@ async function enviarEmail({
 
     await resend.emails.send({
       from: 'Agência Tribo <onboarding@resend.dev>',
-      to: [representanteEmail],
+      to: ['onboarding@resend.dev'],
       subject: `Contrato para aprovação: ${nome}`,
       html: htmlEmail,
       attachments: [
