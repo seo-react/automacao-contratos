@@ -4,8 +4,33 @@
   <meta charset="UTF-8" />
   <title>Painel Administrativo | Agência Tribo</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f9f9f9;
+    }
+    .navbar-dark .nav-link {
+      color: #f1f1f1 !important;
+    }
+    .table-dark thead {
+      background-color: #343a40;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
+  <!-- Menu superior -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <a class="navbar-brand fw-bold" href="/">Agência Tribo</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">🏠 Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/solicitar">📝 Solicitar Contrato</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/admin">📊 Painel</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Conteúdo principal -->
   <div class="container py-5">
     <h2 class="mb-4">📊 Painel de Contratos</h2>
     <table class="table table-bordered table-hover">
@@ -39,8 +64,12 @@
             <td>${c.status}</td>
             <td>${c.data}</td>
             <td>
-              <a href="/pdfs/${c.id}.pdf" target="_blank" class="btn btn-sm btn-primary">📄 Ver PDF</a>
-              <a href="/confirmar?id=${c.id}" class="btn btn-sm btn-success">✅ Aprovar</a>
+              <a href="/pdfs/${c.id}.pdf" target="_blank" class="btn btn-sm btn-primary">
+                <i class="bi bi-file-earmark-pdf"></i> Ver PDF
+              </a>
+              <a href="/confirmar?id=${c.id}" class="btn btn-sm btn-success">
+                <i class="bi bi-check-circle"></i> Aprovar
+              </a>
             </td>
           </tr>
         `;

@@ -2,7 +2,8 @@ const { google } = require('googleapis');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const { enviarEmailDeAprovacao } = require('./email'); // 👈 novo
+const { enviarEmailDeAprovacao } = require('./email');
+const { enviarParaD4Sign } = require('./integracoes/d4sign'); // 👈 novo
 
 const auth = new google.auth.GoogleAuth({
   keyFile: 'credenciais.json',
@@ -31,12 +32,15 @@ async function exportarContratoComoPDF(documentId, nomeArquivo, dadosSignatario)
     writer.on('finish', async () => {
       console.log(`✅ PDF exportado com sucesso: ${caminho}`);
 
-      // 👇 envia o e-mail após exportar
+      // 1. Envia o e-mail de aprovação
       await enviarEmailDeAprovacao({
         nome: dadosSignatario.nome,
         email: dadosSignatario.email,
         id: nomeArquivo.replace('.pdf', '')
       });
+
+      // 2. Envia para assinatura via D4Sign
+      await enviarParaD4Sign(nomeArquivo, dadosSignatario.email, dadosSignatario.nome);
     });
 
     writer.on('error', (err) => {
@@ -46,13 +50,3 @@ async function exportarContratoComoPDF(documentId, nomeArquivo, dadosSignatario)
     console.error('❌ Erro ao exportar o contrato:', err.response?.data?.error?.message || err.message);
   }
 }
-
-// Exemplo de uso
-const documentId = '1kGxkIxCZlQkTpTvrl3dBlrZGFTsdITbnmnXzeZtYfCM';
-const nomeArquivo = 'Contrato_Abdiel_Marins.pdf';
-const dadosSignatario = {
-  nome: 'Abdiel Marins',
-  email: 'abdiel@tribo.com'
-};
-
-exportarContratoComoPDF(documentId, nomeArquivo, dadosSignatario);
