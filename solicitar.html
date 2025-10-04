@@ -13,15 +13,6 @@
       color: #333;
     }
 
-    body.dark-mode {
-      background-color: #121212;
-      color: #f1f1f1;
-    }
-
-    .navbar-dark-mode {
-      background-color: #1c1c1c !important;
-    }
-
     .form-container {
       max-width: 800px;
       margin: 60px auto;
@@ -29,11 +20,6 @@
       padding: 30px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-
-    .dark-mode .form-container {
-      background-color: #1e1e1e;
-      color: #f1f1f1;
     }
 
     label {
@@ -52,21 +38,15 @@
       color: #333;
     }
 
-    .dark-mode input,
-    .dark-mode select,
-    .dark-mode textarea {
-      background-color: #2a2a2a;
-      color: #f1f1f1;
-      border: 1px solid #555;
-    }
-
     textarea {
       resize: vertical;
       min-height: 80px;
     }
 
-    button {
-      margin-top: 30px;
+    button[type="submit"] {
+      display: block;
+      width: 100%;
+      margin-top: 40px;
       padding: 12px 25px;
       background-color: #34a853;
       color: white;
@@ -75,13 +55,8 @@
       font-size: 16px;
       cursor: pointer;
     }
-button[type="submit"] {
-  display: block;
-  width: 100%;
-  margin-top: 40px;
-}
 
-    button:hover {
+    button[type="submit"]:hover {
       background-color: #2c8c45;
     }
 
@@ -92,21 +67,17 @@ button[type="submit"] {
   </style>
 </head>
 <body>
-  <!-- Menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+  <!-- Menu padrão -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
     <a class="navbar-brand fw-bold" href="/">Agência Tribo</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link active" href="/">🏠 Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/solicitar">📝 Solicitar Contrato</a></li>
+        <li class="nav-item"><a class="nav-link" href="/">🏠 Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/solicitar">📝 Solicitar Contrato</a></li>
         <li class="nav-item"><a class="nav-link" href="/admin">📊 Painel</a></li>
       </ul>
     </div>
-    <button onclick="alternarTema()" class="btn btn-outline-light ms-3">
-      <i id="temaIcone" class="bi bi-moon"></i>
-    </button>
   </nav>
-
 
   <!-- Formulário -->
   <main class="form-container">
@@ -175,14 +146,5 @@ button[type="submit"] {
       <button type="submit">Enviar</button>
     </form>
   </main>
-
-  <script>
-    function alternarTema() {
-      document.body.classList.toggle('dark-mode');
-      document.querySelector('nav').classList.toggle('navbar-dark-mode');
-      document.getElementById('temaIcone').classList.toggle('bi-moon');
-      document.getElementById('temaIcone').classList.toggle('bi-sun');
-    }
-  </script>
 </body>
 </html>
