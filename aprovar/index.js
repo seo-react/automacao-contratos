@@ -25,30 +25,32 @@ async function aprovarContrato({ nomeArquivo, signatario, dados }) {
     formData.append('folder', folderID);
 
     const uploadResponse = await axios.post(
-  'https://secure.d4sign.com.br/api/v1/documents',
-  formData,
-  {
-    headers: {
-      ...formData.getHeaders(),
-      Accept: 'application/json'
-    },
-    params: {
-      tokenAPI,
-      cryptKey
+      'https://secure.d4sign.com.br/api/v1/documents',
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+          Accept: 'application/json'
+        },
+        params: {
+          tokenAPI,
+          cryptKey
+        }
+      }
+    );
+
+    // 🔍 Verifica e extrai o UUID corretamente
+    const documentKey =
+      uploadResponse.data.documents?.[0]?.uuid ||
+      uploadResponse.data.uuid ||
+      null;
+
+    if (!documentKey) {
+      console.log('📤 Resposta completa da D4Sign:', JSON.stringify(uploadResponse.data, null, 2));
+      throw new Error('❌ UUID do documento não encontrado na resposta da D4Sign');
     }
-  }
-);
 
-const documentKey = uploadResponse.data.documents?.[0]?.uuid;
-
-if (!documentKey) {
-  console.log('📤 Resposta completa da D4Sign:', uploadResponse.data);
-  throw new Error('❌ UUID do documento não encontrado na resposta da D4Sign');
-}
-
-console.log(`📄 Documento criado na D4Sign: ${documentKey}`);
-
-    
+    console.log(`📄 Documento criado na D4Sign: ${documentKey}`);
 
     // 👤 Cadastrar signatário
     await axios.post(
